@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const moment = require('moment-timezone');
-// const {CacheToken} = require('../../config/redis');
+
 /**
  * Refresh Token Schema
  * @private
@@ -43,10 +43,8 @@ refreshTokenSchema.statics = {
     });
     tokenObject.save();
 
-    // CacheToken(userEmail, tokenObject.token);
     return tokenObject;
   },
-
 };
 
 /**

@@ -10,8 +10,8 @@ cache.get('redis-status', (err, result) => {
   console.log(result);
 });
 
-exports.CacheToken = (email, token) => {
-  const key = '/user/token/' + email;
+exports.CacheToken = (userId, token) => {
+  const key = `/user/token/${userId}`;
   cache.set(key, token);
 };
 

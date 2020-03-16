@@ -8,6 +8,8 @@ const { jwtExpirationInterval } = require('../../config/vars');
 const { omit } = require('lodash');
 const APIError = require('../utils/APIError');
 const emailProvider = require('../services/emails/emailProvider');
+const { CacheToken } = require('../../config/redis');
+
 
 /**
  * Returns a formated object with tokens
@@ -18,6 +20,9 @@ function generateTokenResponse(user, accessToken) {
   const refreshToken = RefreshToken.generate(user).token;
   const expiresIn = moment()
     .add(jwtExpirationInterval, 'minutes');
+
+  CacheToken(user.id, accessToken);
+
   return {
     tokenType,
     accessToken,
@@ -53,8 +58,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { user, accessToken } = await User.findAndGenerateToken(req.body);
-    const geo = geoip.lookup('60.222.230.50'); // req.ip
-    console.log('++++++++login', req.ip, geo);
+    const geo = geoip.lookup(req.ip);
 
     if (user && geo) {
       user.updateGeo = geo;
@@ -104,7 +108,7 @@ exports.refresh = async (req, res, next) => {
     });
     const { user, accessToken } = await User.findAndGenerateToken({
       email,
-      refreshObject
+      refreshObject,
     });
     const response = generateTokenResponse(user, accessToken);
     return res.json(response);
