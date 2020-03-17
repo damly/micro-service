@@ -6,6 +6,7 @@ const productRoutes = require('./product.route');
 const deviceRoutes = require('./device.route');
 const feedbackRoutes = require('./feedback.route');
 const chatRoutes = require('./chat.route');
+const activityRoutes = require('./activity.route');
 
 const router = express.Router();
 
@@ -25,6 +26,7 @@ router.use('/rooms', roomRoutes);
 router.use('/products', productRoutes);
 router.use('/devices', deviceRoutes);
 router.use('/feedbacks', feedbackRoutes);
-router.use('/chat', chatRoutes);
+router.use('/activities', activityRoutes);
+router.use('/chats', chatRoutes);
 
 module.exports = router;

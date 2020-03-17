@@ -22,7 +22,6 @@ exports.load = async (req, res, next, id) => {
  */
 exports.create = async (req, res, next) => {
   try {
-    console.log('====room create: ', req.body, req.user);
     req.body.userId = req.user.id;
     const room = new Room(req.body);
     const savedRoom = await room.save();

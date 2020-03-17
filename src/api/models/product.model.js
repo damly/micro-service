@@ -43,7 +43,7 @@ productSchema.method({
     });
 
     return transformed;
-  }
+  },
 });
 
 /**

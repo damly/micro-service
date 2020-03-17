@@ -54,6 +54,11 @@ const userSchema = new mongoose.Schema({
   updateGeo: {
     type: Object,
   },
+  devices: {
+    type: [{
+      deviceId: String,
+    }],
+  },
 }, {
   timestamps: true,
 });

@@ -44,7 +44,7 @@ exports.register = async (req, res, next) => {
     res.status(httpStatus.CREATED);
     return res.json({
       token,
-      user: userTransformed
+      user: userTransformed,
     });
   } catch (error) {
     return next(User.checkDuplicateEmail(error));
@@ -88,7 +88,7 @@ exports.oAuth = async (req, res, next) => {
     const userTransformed = user.transform();
     return res.json({
       token,
-      user: userTransformed
+      user: userTransformed,
     });
   } catch (error) {
     return next(error);

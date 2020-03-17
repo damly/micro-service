@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const moment = require('moment-timezone');
 const uuidv4 = require('uuid/v4');
 const APIError = require('../utils/APIError');
+const Product = require('./product.model');
 
 /**
  * Device Schema
@@ -36,11 +37,13 @@ const deviceSchema = new mongoose.Schema({
 deviceSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'uuid', 'status', 'productId', 'createdAt'];
+    const fields = ['id', 'uuid', 'status', 'createdAt'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];
     });
+
+    transformed.product = this.productId.transform();
 
     return transformed;
   },
@@ -63,6 +66,10 @@ deviceSchema.statics = {
 
       if (mongoose.Types.ObjectId.isValid(id)) {
         device = await this.findById(id)
+          .populate({
+            path: 'productId',
+            model: Product,
+          })
           .exec();
       }
       if (device) {
@@ -95,9 +102,23 @@ deviceSchema.statics = {
     }, isNil);
 
     return this.find(options)
+      .populate({
+        path: 'productId',
+        model: Product,
+      })
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage)
+      .exec();
+  },
+
+  findByIds(ids) {
+    return this.find({ _id: { $in: ids } })
+      .populate({
+        path: 'productId',
+        model: Product,
+      })
+      .sort({ createdAt: -1 })
       .exec();
   },
 };

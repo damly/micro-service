@@ -91,6 +91,62 @@ router
    */
   .get(authorize(), controller.loggedIn);
 
+router
+  .route('/binding')
+  /**
+   * @api {get} v1/users List Users
+   * @apiDescription Get a list of users
+   * @apiVersion 1.0.0
+   * @apiName ListUsers
+   * @apiGroup User
+   * @apiPermission admin
+   *
+   * @apiHeader {String} Authorization   User's access token
+   *
+   * @apiParam  {Number{1-}}         [page=1]     List page
+   * @apiParam  {Number{1-100}}      [perPage=1]  Users per page
+   * @apiParam  {String}             [id]         User's id
+   *
+   * @apiSuccess {Object[]} binding's list of user.
+   *
+   * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
+   */
+  .get(authorize(), controller.bindingList)
+  /**
+   * @api {get} v1/users/binding Binding device
+   * @apiDescription Binding a device for user
+   * @apiVersion 1.0.0
+   * @apiName BindingDevice
+   * @apiGroup User
+   * @apiPermission user
+   *
+   * @apiHeader {String} Authorization   User's access token
+   *
+   * @apiParam  {String}             deviceId     Device's id
+   *
+   * @apiSuccess {Object[]} binding's list of user.
+   *
+   * @apiError (Unauthorized 401) Unauthorized Only authenticated users can modify the data
+   * @apiError (Not Found 404)    NotFound      Device does not exist
+   */
+  .post(authorize(), controller.binding)
+  /**
+   * @api {patch} v1/users/binding?deviceId=value Unbinding Device
+   * @apiDescription Delete a device for user
+   * @apiVersion 1.0.0
+   * @apiName DeleteUser
+   * @apiGroup User
+   * @apiPermission user
+   *
+   * @apiHeader {String} Authorization   User's access token
+   *
+   * @apiSuccess (No Content 204)  Successfully deleted
+   *
+   * @apiError (Unauthorized 401) Unauthorized  Only authenticated users can delete the data
+   * @apiError (Not Found 404)    NotFound      User does not exist
+   */
+  .delete(authorize(), controller.unbinding);
+
 
 router
   .route('/:userId')

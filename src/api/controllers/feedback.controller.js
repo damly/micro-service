@@ -22,7 +22,6 @@ exports.load = async (req, res, next, id) => {
  */
 exports.create = async (req, res, next) => {
   try {
-    console.log('====feedback create: ', req.body, req.user);
     const feedback = new Feedback(req.body);
     await feedback.save();
     res.status(httpStatus.CREATED);
